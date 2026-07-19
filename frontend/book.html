@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book a Consultation — knowYourUniversity</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg nav-glass fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="home.html">know<span class="accent">YourUniversity</span><small>Shape Your Future</small></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" style="border-color:var(--border-color)"><i class="bi bi-list" style="font-size:1.5rem;color:var(--text-primary)"></i></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="home.html" data-testid="nav-home">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="services.html" data-testid="nav-services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="courses.html" data-testid="nav-courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="universities.html" data-testid="nav-universities">Universities</a></li>
+        <li class="nav-item"><a class="nav-link" href="scholarships.html" data-testid="nav-scholarships">Scholarships</a></li>
+        <li class="nav-item"><a class="nav-link" href="ai.html" data-testid="nav-ai"><i class="bi bi-stars me-1"></i>Ask AI</a></li>
+        <li class="nav-item"><a class="nav-link" href="dashboard.html" data-testid="nav-dashboard"><i class="bi bi-person-circle me-1"></i>Dashboard</a></li>
+        <li class="nav-item ms-lg-3"><button class="theme-toggle" onclick="toggleTheme()" data-testid="theme-toggle-btn"><i id="themeIcon" class="bi bi-sun-fill"></i></button></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section style="padding-top:8rem;padding-bottom:4rem" data-testid="book-page">
+  <div class="container">
+    <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Book a Consultation</span></div>
+    <h1 class="font-display fw-bolder mb-4" style="font-size:clamp(2rem,4.5vw,3rem);letter-spacing:-.02em">Reserve Your <span class="text-accent">30-Minute Session</span></h1>
+
+    <div class="row g-4">
+
+      <!-- Left: Consultant + info -->
+      <div class="col-lg-4">
+        <div class="feature-card" style="padding:1.5rem" id="consultantInfo" data-testid="consultant-info"></div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="col-lg-8">
+        <form class="finder-card" onsubmit="submitBooking(event)" data-testid="book-form">
+          <!-- Consultant -->
+          <div class="mb-4">
+            <label class="text-muted-2 text-uppercase-wide" style="font-size:.72rem;letter-spacing:.14em">1. Choose Consultant</label>
+            <select id="bookConsultant" class="form-select mt-2" data-testid="book-consultant" onchange="onConsultantChange()"></select>
+          </div>
+
+          <!-- Calendar -->
+          <div class="mb-4">
+            <label class="text-muted-2 text-uppercase-wide" style="font-size:.72rem;letter-spacing:.14em">2. Select Date</label>
+            <div class="calendar-wrap mt-2" data-testid="calendar">
+              <div class="calendar-header">
+                <button type="button" class="calendar-nav" onclick="changeMonth(-1)" data-testid="cal-prev"><i class="bi bi-chevron-left"></i></button>
+                <div id="calMonthLabel" class="font-display fw-bold" style="font-size:1.1rem"></div>
+                <button type="button" class="calendar-nav" onclick="changeMonth(1)" data-testid="cal-next"><i class="bi bi-chevron-right"></i></button>
+              </div>
+              <div class="calendar-days">
+                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+              </div>
+              <div class="calendar-grid" id="calGrid" data-testid="cal-grid"></div>
+            </div>
+          </div>
+
+          <!-- Time slots -->
+          <div class="mb-4">
+            <label class="text-muted-2 text-uppercase-wide" style="font-size:.72rem;letter-spacing:.14em">3. Pick Time Slot</label>
+            <div class="time-slots mt-2" id="timeSlots" data-testid="time-slots"></div>
+          </div>
+
+          <!-- Contact -->
+          <div class="mb-3">
+            <label class="text-muted-2 text-uppercase-wide" style="font-size:.72rem;letter-spacing:.14em">4. Your Details</label>
+            <div class="row g-2 mt-1">
+              <div class="col-md-6"><input required type="text" class="form-control" id="bookName" placeholder="Full name" data-testid="book-name"></div>
+              <div class="col-md-6"><input required type="email" class="form-control" id="bookEmail" placeholder="Email" data-testid="book-email"></div>
+              <div class="col-12"><textarea rows="3" class="form-control" id="bookMessage" placeholder="Tell us what you'd like to discuss (optional)..." data-testid="book-message"></textarea></div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3 mb-1 px-1" style="font-size:.92rem">
+            <span class="text-muted-2">Consultation fee</span><strong class="text-accent">₹100.00</strong>
+          </div>
+          <button id="bookSubmit" type="submit" class="btn-yellow w-100 mt-2" data-testid="book-submit"><i class="bi bi-shield-lock me-2"></i>Proceed to Secure Payment · ₹100</button>
+          <p class="text-muted-2 text-center mt-3 mb-0" style="font-size:.78rem"><i class="bi bi-lock-fill me-1"></i>Booking is confirmed only after successful payment.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-bottom">© 2026 knowYourUniversity. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+let selectedDate = null;
+let selectedTime = null;
+let calMonth = new Date();
+
+const TIME_SLOTS = ["09:00 AM","10:00 AM","11:00 AM","02:00 PM","03:00 PM","04:00 PM","05:00 PM"];
+
+function initBooking() {
+  // Populate consultants dropdown
+  const sel = document.getElementById("bookConsultant");
+  sel.innerHTML = window.EDU_DATA.consultants.map(c =>
+    `<option value="${c.id}">${c.name} — ${c.role} (${c.flag})</option>`
+  ).join("");
+  // Preselect from URL
+  const preId = new URLSearchParams(location.search).get("c");
+  if (preId && window.EDU_DATA.consultants.find(c => c.id === preId)) sel.value = preId;
+  onConsultantChange();
+
+  // Prefill user
+  const user = getUser();
+  if (user) {
+    document.getElementById("bookName").value = user.name || "";
+    document.getElementById("bookEmail").value = user.email || "";
+  }
+
+  renderCalendar();
+  renderTimeSlots();
+}
+
+function onConsultantChange() {
+  const id = document.getElementById("bookConsultant").value;
+  const c = window.EDU_DATA.consultants.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById("consultantInfo").innerHTML = `
+    <img src="${c.photo}" alt="${c.name}" style="width:100%;height:200px;object-fit:cover;border-radius:14px;margin-bottom:1rem">
+    <h4 class="font-display fw-bold mb-1">${c.name}</h4>
+    <div class="text-muted-2 mb-2" style="font-size:.9rem">${c.role} · ${c.flag}</div>
+    <div class="d-flex align-items-center gap-2 mb-3">
+      ${starHTML(c.avgRating||5)} <span style="font-size:.85rem"><b>${c.avgRating||5}</b> <span class="text-muted-2">(${c.totalReviews||0} reviews)</span></span>
+    </div>
+    <div class="mb-2"><small class="text-muted-2 text-uppercase-wide">Experience</small><div style="font-size:.9rem">${c.experience}</div></div>
+    <div class="mb-2"><small class="text-muted-2 text-uppercase-wide">Expertise</small><div class="mt-1">${c.expertise.map(e => `<span class="chip-mini" style="margin:2px">${e}</span>`).join("")}</div></div>
+    <div><small class="text-muted-2 text-uppercase-wide">Countries</small><div style="font-size:.85rem">${c.countries.join(" · ")}</div></div>
+    <div class="mt-3 pt-3" style="border-top:1px solid var(--border-color);font-size:.9rem"><i class="bi bi-clock me-2 text-accent"></i>30-minute session · ₹100</div>
+  `;
+}
+
+function starHTML(rating) {
+  let s = "";
+  for (let i = 1; i <= 5; i++) {
+    s += `<i class="bi bi-star${i <= Math.round(rating) ? '-fill' : ''}" style="color:${i <= Math.round(rating) ? 'var(--accent-primary)' : 'var(--text-secondary)'};font-size:.9rem"></i>`;
+  }
+  return s;
+}
+
+function changeMonth(delta) {
+  calMonth.setMonth(calMonth.getMonth() + delta);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const y = calMonth.getFullYear(), m = calMonth.getMonth();
+  document.getElementById("calMonthLabel").textContent =
+    calMonth.toLocaleString("en", { month: "long", year: "numeric" });
+
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  let html = "";
+  for (let i = 0; i < firstDay; i++) html += `<span class="cal-cell empty"></span>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const date = new Date(y, m, d);
+    const past = date < today;
+    const isSun = date.getDay() === 0;
+    const key = date.toISOString().slice(0,10);
+    const disabled = past || isSun;
+    const selected = selectedDate === key;
+    html += `<button type="button" class="cal-cell ${disabled ? 'disabled' : ''} ${selected ? 'selected' : ''}" ${disabled ? 'disabled' : ''} onclick="pickDate('${key}')" data-testid="cal-date-${key}">${d}</button>`;
+  }
+  document.getElementById("calGrid").innerHTML = html;
+}
+
+function pickDate(key) {
+  selectedDate = key;
+  selectedTime = null;
+  renderCalendar();
+  renderTimeSlots();
+}
+
+function renderTimeSlots() {
+  const box = document.getElementById("timeSlots");
+  if (!selectedDate) {
+    box.innerHTML = `<div class="text-muted-2" style="font-size:.9rem"><i class="bi bi-info-circle me-1"></i>Select a date to see available slots</div>`;
+    return;
+  }
+  box.innerHTML = TIME_SLOTS.map(t =>
+    `<button type="button" class="time-slot ${selectedTime === t ? 'selected' : ''}" onclick="pickTime('${t}')" data-testid="slot-${t.replace(/[: ]/g,'')}">${t}</button>`
+  ).join("");
+}
+
+function pickTime(t) { selectedTime = t; renderTimeSlots(); }
+
+async function submitBooking(e) {
+  e.preventDefault();
+  if (!selectedDate) { showToast("Please select a date"); return; }
+  if (!selectedTime) { showToast("Please select a time slot"); return; }
+  const id = document.getElementById("bookConsultant").value;
+  const c = window.EDU_DATA.consultants.find(x => x.id === id);
+  const name = document.getElementById("bookName").value.trim();
+  const email = document.getElementById("bookEmail").value.trim();
+  const message = document.getElementById("bookMessage").value.trim();
+  const dateStr = new Date(selectedDate).toLocaleDateString("en", {weekday:"short", month:"short", day:"numeric", year:"numeric"});
+
+  if (typeof window.apiCreatePaymentOrder !== "function" || !window.Razorpay) {
+    showToast("Secure payments are unavailable. Please use the website server and try again.");
+    return;
+  }
+  if (!getUser()) {
+    showToast("Please log in before paying for a consultation.");
+    setTimeout(() => window.location.href = "login.html", 900);
+    return;
+  }
+
+  const submit = document.getElementById("bookSubmit");
+  submit.disabled = true;
+  submit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Preparing secure payment…';
+  const order = await window.apiCreatePaymentOrder({
+    consultant_id: id, consultant_name: c.name, date: dateStr, time: selectedTime, name, email, message
+  });
+  if (!order.ok) {
+    showToast(order.data.error || "Could not start payment. Please try again.");
+    submit.disabled = false;
+    submit.innerHTML = '<i class="bi bi-shield-lock me-2"></i>Proceed to Secure Payment · ₹100';
+    return;
+  }
+
+  const payment = new Razorpay({
+    key: order.data.keyId, amount: order.data.amount, currency: order.data.currency,
+    name: "knowYourUniversity", description: "30-minute consultation", order_id: order.data.orderId,
+    prefill: { name, email }, theme: { color: "#d79600" },
+    handler: async function (response) {
+      const verified = await window.apiVerifyPayment({ paymentId: order.data.paymentId, ...response });
+      if (!verified.ok || !verified.data.booking) {
+        showToast(verified.data.error || "Payment could not be verified. No booking was created.");
+        submit.disabled = false;
+        submit.innerHTML = '<i class="bi bi-shield-lock me-2"></i>Proceed to Secure Payment · ₹100';
+        return;
+      }
+      const b = verified.data.booking;
+      const list = getBookings().filter(x => x.id !== b.id);
+      list.push({ id:b.id, consultantId:b.consultantId, consultantName:b.consultantName, date:b.date, time:b.time, name:b.name, email:b.email, message:b.message, createdAt:b.createdAt, invoiceUrl:verified.data.invoiceUrl });
+      setBookings(list);
+      showToast("🎉 Payment verified — consultation booked!");
+      setTimeout(() => window.location.href = "dashboard.html?booked=1", 900);
+    },
+    modal: { ondismiss: function () { showToast("Payment cancelled. Your booking was not created."); submit.disabled = false; submit.innerHTML = '<i class="bi bi-shield-lock me-2"></i>Proceed to Secure Payment · ₹100'; } }
+  });
+  payment.on("payment.failed", function () { showToast("Payment failed. Your booking was not created."); });
+  payment.open();
+}
+
+document.addEventListener("DOMContentLoaded", initBooking);
+ </script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

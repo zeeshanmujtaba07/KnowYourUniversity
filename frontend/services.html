@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Services — knowYourUniversity</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg nav-glass fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="home.html">know<span class="accent">YourUniversity</span><small>Shape Your Future</small></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" style="border-color:var(--border-color)"><i class="bi bi-list" style="font-size:1.5rem;color:var(--text-primary)"></i></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="home.html" data-testid="nav-home">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="services.html" data-testid="nav-services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="courses.html" data-testid="nav-courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="universities.html" data-testid="nav-universities">Universities</a></li>
+        <li class="nav-item"><a class="nav-link" href="scholarships.html" data-testid="nav-scholarships">Scholarships</a></li>
+        <li class="nav-item"><a class="nav-link" href="ai.html" data-testid="nav-ai"><i class="bi bi-stars me-1"></i>Ask AI</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html" data-testid="nav-about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-testid="nav-contact">Contact</a></li>
+        <li class="nav-item ms-lg-3"><button class="theme-toggle" onclick="toggleTheme()" data-testid="theme-toggle-btn"><i id="themeIcon" class="bi bi-sun-fill"></i></button></li>
+        <li class="nav-item ms-lg-2"><a class="btn-outline-glass" href="login.html" data-testid="nav-login">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section style="padding-top:8rem" data-testid="services-hero">
+  <div class="container">
+    <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Our Services</span></div>
+    <h1 class="font-display fw-bolder mb-3" style="font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.02em">End-to-End Support for<br>Your <span class="text-accent">Study-Abroad Journey</span></h1>
+    <p class="section-sub">From choosing a course to landing at your dream campus — we're your team at every stage.</p>
+  </div>
+</section>
+
+<!-- SERVICES GRID -->
+<section style="padding-top:2rem" data-testid="services-grid">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-compass-fill"></i></div><h5 class="font-display">College Finder</h5><p class="text-muted-2 mb-0">AI-guided university matching based on your course, budget, personality and goals.</p></div></div>
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-person-workspace"></i></div><h5 class="font-display">Personal Consultant</h5><p class="text-muted-2 mb-0">A dedicated 1:1 advisor who guides you from shortlisting to visa approval.</p></div></div>
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-file-earmark-text"></i></div><h5 class="font-display">Application Support</h5><p class="text-muted-2 mb-0">SOP writing, LOR guidance, form-filling and portfolio review.</p></div></div>
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-cash-stack"></i></div><h5 class="font-display">Scholarship Guidance</h5><p class="text-muted-2 mb-0">Match with 500+ scholarships and get essay + interview prep.</p></div></div>
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-airplane"></i></div><h5 class="font-display">Visa Assistance</h5><p class="text-muted-2 mb-0">Documentation checklist, mock interviews and country-specific tips.</p></div></div>
+      <div class="col-md-6 col-lg-4"><div class="feature-card"><div class="feature-icon"><i class="bi bi-house-heart"></i></div><h5 class="font-display">Pre-Departure & Housing</h5><p class="text-muted-2 mb-0">Accommodation shortlist, banking, forex, and campus onboarding.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLEGE FINDER (moved from home) -->
+<section id="finder" style="background:var(--bg-secondary)" data-testid="section-finder">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-4">
+        <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Signature Tool</span></div>
+        <h2 class="section-title mb-3">Find Your <span class="text-accent">Best-Fit</span> College</h2>
+        <p class="section-sub mb-0">Answer 6 quick questions and get personalized university recommendations aligned with your goals, budget and personality.</p>
+      </div>
+      <div class="col-lg-8">
+        <div class="finder-card" data-testid="college-finder">
+          <form onsubmit="submitFinder(event)" class="row g-3" data-testid="finder-form">
+            <div class="col-md-6"><label>Course</label><select id="f-course" class="form-select" data-testid="filter-course"></select></div>
+            <div class="col-md-6"><label>Personality</label><select id="f-personality" class="form-select" data-testid="filter-personality"></select></div>
+            <div class="col-md-6"><label>Budget</label><select id="f-budget" class="form-select" data-testid="filter-budget"></select></div>
+            <div class="col-md-6"><label>Location</label><select id="f-location" class="form-select" data-testid="filter-location"></select></div>
+            <div class="col-md-6"><label>Ranking</label><select id="f-ranking" class="form-select" data-testid="filter-ranking"></select></div>
+            <div class="col-md-6"><label>Exams</label><select id="f-exam" class="form-select" data-testid="filter-exam"></select></div>
+            <div class="col-12 pt-2">
+              <button type="submit" class="btn-yellow w-100" data-testid="finder-submit"><i class="bi bi-magic me-2"></i>Find My College</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONSULTANTS -->
+<section id="consultants" data-testid="section-consultants">
+  <div class="container">
+    <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Choose Your Personal Consultant</span></div>
+    <div class="row align-items-end mb-4">
+      <div class="col-lg-7"><h2 class="section-title mb-0">Get Matched with a <span class="text-accent">Human Expert</span></h2></div>
+      <div class="col-lg-5"><p class="section-sub mb-0">Our consultants are ex-alumni of top universities. Book a free 30-min call to see if you're the right fit.</p></div>
+    </div>
+    <div class="row g-4" id="consultantsGrid" data-testid="consultants-grid"></div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section style="background:var(--bg-secondary)">
+  <div class="container text-center">
+    <div class="d-flex justify-content-center mb-2"><div class="divider-line"></div></div>
+    <h2 class="section-title">Ready to Start?</h2>
+    <p class="section-sub mx-auto mb-4">Book a free consultation and get a clear roadmap to your dream university within 48 hours.</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      <a href="#finder" class="btn-yellow" data-testid="cta-finder"><i class="bi bi-magic me-2"></i>Use College Finder</a>
+      <a href="contact.html" class="btn-outline-glass" data-testid="cta-contact"><i class="bi bi-calendar-check me-2"></i>Book Free Consultation</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5"><div class="font-display fw-bold" style="font-size:1.35rem">know<span class="text-accent">YourUniversity</span></div><p class="mt-2" style="max-width:340px">Your compass to global higher education.</p></div>
+      <div class="col-6 col-lg-3"><h6>Explore</h6><a href="home.html">Home</a><a href="services.html">Services</a><a href="courses.html">Courses</a><a href="universities.html">Universities</a><a href="scholarships.html">Scholarships</a></div>
+      <div class="col-6 col-lg-4"><h6>Company</h6><a href="about.html">About</a><a href="contact.html">Contact</a><a href="ai.html">Ask AI</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 knowYourUniversity. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function starHTML(rating) {
+  let s = "";
+  for (let i = 1; i <= 5; i++) {
+    s += `<i class="bi bi-star${i <= Math.round(rating) ? '-fill' : ''}" style="color:${i <= Math.round(rating) ? 'var(--accent-primary)' : 'var(--text-secondary)'};font-size:.85rem"></i>`;
+  }
+  return s;
+}
+function renderConsultants() {
+  const wrap = document.getElementById("consultantsGrid");
+  wrap.innerHTML = window.EDU_DATA.consultants.map(c => `
+    <div class="col-md-6 col-lg-4">
+      <div class="feature-card" data-testid="consultant-${c.id}" style="padding:1.6rem">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <img src="${c.photo}" alt="${c.name}" style="width:76px;height:76px;border-radius:50%;object-fit:cover;border:3px solid var(--accent-primary)">
+          <div class="flex-grow-1">
+            <h5 class="font-display mb-0">${c.name}</h5>
+            <div class="text-muted-2" style="font-size:.82rem">${c.role}</div>
+            <div class="d-flex align-items-center gap-1 mt-1">${starHTML(c.avgRating)} <span style="font-size:.78rem;color:var(--text-secondary)"><b style="color:var(--accent-primary)">${c.avgRating}</b> (${c.totalReviews})</span></div>
+          </div>
+        </div>
+        <div class="text-muted-2 mb-3" style="font-size:.78rem"><i class="bi bi-briefcase-fill me-1"></i>${c.experience}</div>
+        <p class="text-muted-2" style="font-size:.9rem">${c.bio}</p>
+        <div class="mb-2">
+          <small class="text-muted-2 text-uppercase-wide">Expertise</small>
+          <div class="mt-1">${c.expertise.map(e => `<span class="chip-mini" style="margin:2px">${e}</span>`).join("")}</div>
+        </div>
+        <div class="mb-3">
+          <small class="text-muted-2 text-uppercase-wide">Countries</small>
+          <div class="mt-1" style="font-size:.85rem">${c.countries.join(" · ")}</div>
+        </div>
+
+        <!-- Reviews toggle -->
+        <button class="btn-outline-glass w-100 mb-2" style="padding:.55rem 1rem;font-size:.82rem" data-bs-toggle="collapse" data-bs-target="#rev-${c.id}" data-testid="toggle-reviews-${c.id}">
+          <i class="bi bi-chat-square-quote me-1"></i>Read ${c.totalReviews} Reviews <i class="bi bi-chevron-down ms-1"></i>
+        </button>
+        <div class="collapse" id="rev-${c.id}">
+          <div class="p-3" style="background:var(--bg-secondary);border-radius:12px;margin-bottom:.75rem">
+            ${c.reviews.map(r => `
+              <div class="review-item">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <div style="font-weight:700;font-size:.9rem">${r.name} <small class="text-muted-2 ms-1" style="font-weight:normal">→ ${r.uni}</small></div>
+                  <div class="review-stars">${starHTML(r.rating)}</div>
+                </div>
+                <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:.35rem">"${r.text}"</p>
+                <small class="text-muted-2" style="font-size:.75rem">${r.date}</small>
+              </div>`).join("")}
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 pt-3" style="border-top:1px solid var(--border-color)">
+          <a href="book.html?c=${c.id}" class="btn-yellow flex-fill" style="padding:.6rem 1rem;font-size:.85rem;line-height:1.15" data-testid="consultant-book-${c.id}">
+            <i class="bi bi-calendar-check me-1"></i>Book Paid Consultation
+            <div style="font-size:.7rem;opacity:.85;margin-top:.15rem;font-weight:600">$99 · 60 min session</div>
+          </a>
+          <a href="mailto:${c.email}" class="btn-outline-glass" style="padding:.55rem 1rem;font-size:.85rem" data-testid="consultant-email-${c.id}" title="Email"><i class="bi bi-envelope"></i></a>
+          <a href="https://wa.me/${c.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" rel="noopener" class="btn-outline-glass" style="padding:.55rem 1rem;font-size:.85rem" data-testid="consultant-whatsapp-${c.id}" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+        </div>
+      </div>
+    </div>`).join("");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  initFinderOptions();
+  renderConsultants();
+});
+</script>
+</body>
+</html>

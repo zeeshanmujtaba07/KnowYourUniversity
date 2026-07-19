@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Courses — knowYourUniversity</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg nav-glass fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="home.html">know<span class="accent">YourUniversity</span><small>Shape Your Future</small></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" style="border-color:var(--border-color)"><i class="bi bi-list" style="font-size:1.5rem;color:var(--text-primary)"></i></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="home.html" data-testid="nav-home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="services.html" data-testid="nav-services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="courses.html" data-testid="nav-courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="universities.html" data-testid="nav-universities">Universities</a></li>
+        <li class="nav-item"><a class="nav-link" href="scholarships.html" data-testid="nav-scholarships">Scholarships</a></li>
+        <li class="nav-item"><a class="nav-link" href="ai.html" data-testid="nav-ai"><i class="bi bi-stars me-1"></i>Ask AI</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html" data-testid="nav-about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-testid="nav-contact">Contact</a></li>
+        <li class="nav-item ms-lg-3"><button class="theme-toggle" onclick="toggleTheme()" data-testid="theme-toggle-btn"><i id="themeIcon" class="bi bi-sun-fill"></i></button></li>
+        <li class="nav-item ms-lg-2"><a class="btn-outline-glass" href="login.html" data-testid="nav-login">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section style="padding-top:8rem" data-testid="courses-hero">
+  <div class="container">
+    <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Curriculum Explorer</span></div>
+    <h1 class="font-display fw-bolder mb-3" style="font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:-.02em">Explore Every Course<br><span class="text-accent">You Can Study Abroad</span></h1>
+    <p class="section-sub">From engineering to arts — dive into the disciplines shaping tomorrow. Filter by category or search by name.</p>
+
+    <div class="finder-card mt-4 row g-3" data-testid="course-filters">
+      <div class="col-md-8">
+        <label>Search courses</label>
+        <input type="text" id="courseSearch" class="form-control" placeholder="Try 'Computer Science' or 'Design'..." data-testid="course-search">
+      </div>
+      <div class="col-md-4">
+        <label>Category</label>
+        <select id="courseTag" class="form-select" data-testid="course-tag"></select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:2rem">
+  <div class="container">
+    <div class="row g-4" id="courseGrid" data-testid="course-grid"></div>
+  </div>
+</section>
+
+<!-- Course Detail Modal -->
+<div class="modal fade" id="courseModal" tabindex="-1" aria-hidden="true" data-testid="course-modal">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:22px;color:var(--text-primary)">
+      <div id="cmImage" style="height:200px;background-size:cover;background-position:center;position:relative;border-radius:22px 22px 0 0">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.55);border-radius:50%;padding:.7rem" aria-label="Close" data-testid="cm-close"></button>
+        <div style="position:absolute;bottom:14px;left:20px"><span class="chip-mini" id="cmTag" style="font-size:.75rem">STEM</span></div>
+      </div>
+      <div class="modal-body" style="padding:1.75rem">
+        <h3 class="font-display fw-bolder mb-2" id="cmName" style="letter-spacing:-.02em">Course Name</h3>
+        <p class="text-muted-2" id="cmDesc" style="font-size:1rem">Course description</p>
+        <div class="row g-3 mt-2 mb-3">
+          <div class="col-md-6"><div class="feature-card" style="padding:1rem"><small class="text-muted-2 text-uppercase-wide"><i class="bi bi-clock me-1 text-accent"></i>Duration</small><div id="cmDuration" class="font-display fw-bold mt-1" style="font-size:1rem">—</div></div></div>
+          <div class="col-md-6"><div class="feature-card" style="padding:1rem"><small class="text-muted-2 text-uppercase-wide"><i class="bi bi-cash-coin me-1 text-accent"></i>Avg Salary</small><div id="cmSalary" class="font-display fw-bold mt-1 text-accent" style="font-size:1rem">—</div></div></div>
+        </div>
+        <div class="mb-3"><h6 class="font-display fw-bold"><i class="bi bi-briefcase-fill me-2 text-accent"></i>Career Paths</h6><div id="cmCareers"></div></div>
+        <div class="mb-4"><h6 class="font-display fw-bold"><i class="bi bi-tools me-2 text-accent"></i>Key Skills You'll Learn</h6><div id="cmSkills"></div></div>
+        <div class="mb-2 pt-3" style="border-top:1px solid var(--border-color)">
+          <h6 class="font-display fw-bold mb-3"><i class="bi bi-mortarboard-fill me-2 text-accent"></i>Best Colleges for this Course</h6>
+          <div id="cmColleges" data-testid="cm-colleges"></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border-top:1px solid var(--border-color);padding:1rem 1.75rem">
+        <a href="universities.html" class="btn-outline-glass" data-testid="cm-browse">Browse All Universities</a>
+        <a href="services.html#finder" class="btn-yellow" data-testid="cm-finder"><i class="bi bi-magic me-2"></i>Find My Match</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section style="background:var(--bg-secondary)">
+  <div class="container">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-7">
+        <div class="d-flex align-items-center mb-2"><div class="divider-line me-3"></div><span class="section-eyebrow">Not sure what to study?</span></div>
+        <h2 class="section-title">Let our finder recommend a path.</h2>
+        <p class="section-sub mb-4">Answer a few questions about your interests, budget and goals — we'll match you with universities that fit.</p>
+        <a href="home.html#college-finder" class="btn-yellow"><i class="bi bi-magic me-2"></i>Try College Finder</a>
+      </div>
+      <div class="col-lg-5"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?crop=entropy&cs=srgb&fm=jpg&q=85" class="img-fluid rounded-4" alt="students" style="box-shadow:var(--shadow)"></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5"><div class="font-display fw-bold" style="font-size:1.35rem">know<span class="text-accent">YourUniversity</span></div><p class="mt-2" style="max-width:340px">Your compass to global higher education.</p></div>
+      <div class="col-6 col-lg-3"><h6>Explore</h6><a href="home.html">Home</a><a href="courses.html">Courses</a><a href="universities.html">Universities</a><a href="scholarships.html">Scholarships</a></div>
+      <div class="col-6 col-lg-4"><h6>Company</h6><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 knowYourUniversity. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

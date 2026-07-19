@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ask your AI — knowYourUniversity</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .ai-shell { padding-top: 6.5rem; padding-bottom: 3rem; min-height: 100vh; }
+    .ai-grid { display: grid; grid-template-columns: 320px 1fr; gap: 1.5rem; }
+    @media (max-width: 991.98px) { .ai-grid { grid-template-columns: 1fr; } .ai-side { order: 2; } }
+    .ai-side { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 22px; padding: 1.5rem; height: fit-content; }
+    .ai-main { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 22px; display: flex; flex-direction: column; min-height: 72vh; overflow: hidden; }
+    .ai-header {
+      padding: 1.15rem 1.35rem; border-bottom: 1px solid var(--border-color);
+      display: flex; align-items: center; gap: 0.85rem;
+      background: var(--surface-glass); backdrop-filter: blur(12px);
+    }
+    .ai-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-primary), #F97316);
+      color: #0B1120; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+    }
+    .ai-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; color: var(--text-secondary); }
+    .ai-status .dot { width: 8px; height: 8px; border-radius: 50%; background: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,.18); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: 0.55 } }
+
+    .ai-messages { flex: 1; overflow-y: auto; padding: 1.5rem 1.35rem; display: flex; flex-direction: column; gap: 1rem; }
+    .ai-msg { display: flex; gap: 0.75rem; max-width: 80%; }
+    .ai-msg.user { align-self: flex-end; flex-direction: row-reverse; }
+    .ai-msg .bubble {
+      padding: 0.85rem 1.15rem; border-radius: 18px; line-height: 1.5;
+      background: var(--bg-secondary); color: var(--text-primary);
+      border: 1px solid var(--border-color); font-size: 0.95rem;
+    }
+    .ai-msg.user .bubble { background: var(--accent-primary); color: #0B1120; border-color: var(--accent-primary); }
+    .ai-msg .avatar-sm { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+    .ai-msg.bot .avatar-sm { background: linear-gradient(135deg, var(--accent-primary), #F97316); color: #0B1120; }
+    .ai-msg.user .avatar-sm { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-color); }
+
+    .ai-typing { display: inline-flex; gap: 4px; padding: 0.85rem 1.15rem; background: var(--bg-secondary); border-radius: 18px; border: 1px solid var(--border-color); }
+    .ai-typing span { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-primary); opacity: 0.4; animation: typing 1.2s infinite; }
+    .ai-typing span:nth-child(2) { animation-delay: 0.2s }
+    .ai-typing span:nth-child(3) { animation-delay: 0.4s }
+    @keyframes typing { 0%,60%,100% { transform: translateY(0); opacity: 0.4 } 30% { transform: translateY(-6px); opacity: 1 } }
+
+    .ai-input-bar {
+      border-top: 1px solid var(--border-color); padding: 1rem 1.25rem;
+      background: var(--surface-glass); backdrop-filter: blur(12px);
+    }
+    .ai-input-wrap { display: flex; gap: 0.6rem; align-items: flex-end; }
+    .ai-input {
+      flex: 1; background: var(--bg-secondary); color: var(--text-primary);
+      border: 1px solid var(--border-color); border-radius: 16px;
+      padding: 0.85rem 1.1rem; resize: none; font-family: inherit; font-size: 0.95rem;
+      max-height: 140px;
+    }
+    .ai-input:focus { outline: none; border-color: var(--accent-primary); box-shadow: 0 0 0 0.2rem rgba(251,191,36,.22); }
+    .ai-send {
+      width: 46px; height: 46px; border-radius: 50%; border: none;
+      background: var(--accent-primary); color: #0B1120;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; cursor: pointer; transition: transform .25s ease;
+    }
+    .ai-send:hover { transform: scale(1.08); }
+    .ai-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .suggest-chip {
+      display: block; width: 100%; text-align: left;
+      background: var(--bg-secondary); border: 1px solid var(--border-color);
+      color: var(--text-primary); padding: 0.7rem 0.85rem;
+      border-radius: 12px; font-size: 0.85rem; margin-bottom: 0.5rem;
+      cursor: pointer; transition: all .25s ease;
+    }
+    .suggest-chip:hover { border-color: var(--accent-primary); color: var(--accent-primary); transform: translateX(4px); }
+    .suggest-chip i { color: var(--accent-primary); margin-right: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg nav-glass fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="home.html">know<span class="accent">YourUniversity</span><small>Shape Your Future</small></a>
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" style="border-color:var(--border-color)"><i class="bi bi-list" style="font-size:1.5rem;color:var(--text-primary)"></i></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="home.html" data-testid="nav-home">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="services.html" data-testid="nav-services">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="courses.html" data-testid="nav-courses">Courses</a></li>
+        <li class="nav-item"><a class="nav-link" href="universities.html" data-testid="nav-universities">Universities</a></li>
+        <li class="nav-item"><a class="nav-link" href="scholarships.html" data-testid="nav-scholarships">Scholarships</a></li>
+        <li class="nav-item"><a class="nav-link active" href="ai.html" data-testid="nav-ai"><i class="bi bi-stars me-1"></i>Ask AI</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html" data-testid="nav-about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html" data-testid="nav-contact">Contact</a></li>
+        <li class="nav-item ms-lg-3"><button class="theme-toggle" onclick="toggleTheme()" data-testid="theme-toggle-btn"><i id="themeIcon" class="bi bi-sun-fill"></i></button></li>
+        <li class="nav-item ms-lg-2"><a class="btn-outline-glass" href="login.html" data-testid="nav-login">Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="ai-shell" data-testid="ai-page">
+  <div class="container">
+
+    <div class="d-flex align-items-center mb-3">
+      <div class="divider-line me-3"></div>
+      <span class="section-eyebrow">Ask your AI</span>
+    </div>
+    <h1 class="font-display fw-bolder mb-2" style="font-size:clamp(1.8rem,4vw,3rem);letter-spacing:-.02em">
+      Your Personal <span class="text-accent">Study-Abroad</span> Advisor
+    </h1>
+    <p class="section-sub mb-4">Ask about universities, courses, scholarships, or applications using our university directory and study-abroad guidance.</p>
+
+    <div class="ai-grid">
+
+      <!-- Sidebar -->
+      <aside class="ai-side" data-testid="ai-sidebar">
+        <div class="d-flex align-items-center mb-3">
+          <div class="feature-icon" style="width:38px;height:38px;font-size:1rem;margin:0 .6rem 0 0"><i class="bi bi-lightning-charge-fill"></i></div>
+          <div class="font-display fw-bold" style="font-size:1.05rem">Suggested Prompts</div>
+        </div>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-1"><i class="bi bi-mortarboard"></i>Recommend top universities in Germany</button>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-2"><i class="bi bi-cash-coin"></i>What scholarships fit an Indian student with $20k budget?</button>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-3"><i class="bi bi-lightbulb"></i>Best courses for an Analyst personality?</button>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-4"><i class="bi bi-compass"></i>Compare MIT vs Stanford for CS</button>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-5"><i class="bi bi-calendar-event"></i>When should I start my application for Fall 2027?</button>
+        <button class="suggest-chip" onclick="askSuggested(this)" data-testid="prompt-6"><i class="bi bi-file-earmark-text"></i>How do I write a great SOP?</button>
+
+        <div class="mt-4 pt-4" style="border-top:1px solid var(--border-color)">
+          <div class="text-muted-2 text-uppercase-wide mb-2" style="font-size:.72rem">Recent chats</div>
+          <div id="chatHistory" data-testid="chat-history"><div class="text-muted-2" style="font-size:.85rem">No previous chats yet.</div></div>
+        </div>
+
+        <button class="btn-outline-glass w-100 mt-3" onclick="clearChat()" data-testid="clear-chat" style="padding:.55rem 1rem;font-size:.85rem"><i class="bi bi-arrow-clockwise me-1"></i>New Chat</button>
+      </aside>
+
+      <!-- Main chat -->
+      <section class="ai-main" data-testid="ai-main">
+        <header class="ai-header">
+          <div class="ai-avatar"><i class="bi bi-stars"></i></div>
+          <div class="flex-grow-1">
+            <div class="font-display fw-bold" style="font-size:1.05rem">KYU Assistant</div>
+            <div class="ai-status"><span class="dot"></span>Online — ready to advise</div>
+          </div>
+          <button class="theme-toggle" onclick="clearChat()" title="New chat" data-testid="header-new-chat"><i class="bi bi-plus-lg"></i></button>
+        </header>
+
+        <div class="ai-messages" id="aiMessages" data-testid="ai-messages">
+          <!-- Welcome message -->
+          <div class="ai-msg bot">
+            <div class="avatar-sm"><i class="bi bi-stars"></i></div>
+            <div class="bubble">
+              <div class="font-display fw-bold mb-1">Hi there! 👋</div>
+              I'm your <b>KYU Study Advisor</b>. I can help you explore universities, courses, scholarships, application tips, visa planning, and school comparisons using the knowYourUniversity directory.
+              <div class="mt-2 text-muted-2" style="font-size:.82rem">💡 Try a suggested prompt on the left, or just type a question below.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ai-input-bar">
+          <form class="ai-input-wrap" onsubmit="handleAskAI(event)" data-testid="ai-form">
+            <textarea id="aiInput" class="ai-input" rows="1" placeholder="Ask me anything about studying abroad..." data-testid="ai-input" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();handleAskAI(event);}" required></textarea>
+            <button type="submit" class="ai-send" id="aiSendBtn" data-testid="ai-send" aria-label="Send"><i class="bi bi-send-fill"></i></button>
+          </form>
+          <div class="text-muted-2 mt-2" style="font-size:.72rem;text-align:center">
+            <i class="bi bi-info-circle me-1"></i>Recommendations use the knowYourUniversity directory and local study-abroad guidance. Always verify final requirements with the university.
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5"><div class="font-display fw-bold" style="font-size:1.35rem">know<span class="text-accent">YourUniversity</span></div><p class="mt-2" style="max-width:340px">Your compass to global higher education.</p></div>
+      <div class="col-6 col-lg-3"><h6>Explore</h6><a href="home.html">Home</a><a href="courses.html">Courses</a><a href="universities.html">Universities</a><a href="scholarships.html">Scholarships</a><a href="ai.html">Ask AI</a></div>
+      <div class="col-6 col-lg-4"><h6>Company</h6><a href="about.html">About</a><a href="contact.html">Contact</a></div>
+    </div>
+    <div class="foot-bottom">© 2026 knowYourUniversity. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+// ============ Ask AI page logic ============
+const CHAT_KEY = "kyu-ai-chat";
+
+function loadChat() {
+  try { return JSON.parse(localStorage.getItem(CHAT_KEY) || "[]"); } catch(e) { return []; }
+}
+function saveChat(msgs) {
+  localStorage.setItem(CHAT_KEY, JSON.stringify(msgs.slice(-40))); // keep last 40
+  renderHistory();
+}
+function renderHistory() {
+  const msgs = loadChat();
+  const box = document.getElementById("chatHistory");
+  const userMsgs = msgs.filter(m => m.role === "user").slice(-5).reverse();
+  if (!userMsgs.length) { box.innerHTML = `<div class="text-muted-2" style="font-size:.85rem">No previous chats yet.</div>`; return; }
+  box.innerHTML = userMsgs.map(m => `<div class="text-muted-2" style="font-size:.82rem;padding:.3rem 0;border-bottom:1px dashed var(--border-color);cursor:pointer" onclick="fillInput('${m.text.replace(/'/g, "\\'").replace(/"/g,'&quot;')}')"><i class="bi bi-clock-history me-1"></i>${m.text.length > 42 ? m.text.slice(0,42)+'…' : m.text}</div>`).join("");
+}
+function fillInput(txt) { document.getElementById("aiInput").value = txt; document.getElementById("aiInput").focus(); }
+
+function renderMessages() {
+  const msgs = loadChat();
+  const box = document.getElementById("aiMessages");
+  // Keep welcome, then append rest
+  const welcome = box.firstElementChild;
+  box.innerHTML = "";
+  box.appendChild(welcome);
+  msgs.forEach(m => box.appendChild(bubbleFor(m.role, m.text)));
+  box.scrollTop = box.scrollHeight;
+}
+function bubbleFor(role, text) {
+  const wrap = document.createElement("div");
+  wrap.className = `ai-msg ${role === "user" ? "user" : "bot"}`;
+  wrap.setAttribute("data-testid", `msg-${role}`);
+  wrap.innerHTML = `
+    <div class="avatar-sm">${role === "user" ? '<i class="bi bi-person-fill"></i>' : '<i class="bi bi-stars"></i>'}</div>
+    <div class="bubble">${escapeHtml(text).replace(/\n/g,"<br>")}</div>`;
+  return wrap;
+}
+function escapeHtml(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+function askSuggested(btn) {
+  document.getElementById("aiInput").value = btn.textContent.trim();
+  handleAskAI(new Event("submit"));
+}
+
+async function handleAskAI(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  const input = document.getElementById("aiInput");
+  const text = input.value.trim();
+  if (!text) return;
+  const sendBtn = document.getElementById("aiSendBtn");
+
+  const msgs = loadChat();
+  msgs.push({ role: "user", text, at: Date.now() });
+  saveChat(msgs);
+  renderMessages();
+  input.value = "";
+  sendBtn.disabled = true;
+
+  // Show typing indicator
+  const typing = document.createElement("div");
+  typing.className = "ai-msg bot";
+  typing.id = "typing-indicator";
+  typing.innerHTML = `<div class="avatar-sm"><i class="bi bi-stars"></i></div><div class="ai-typing"><span></span><span></span><span></span></div>`;
+  document.getElementById("aiMessages").appendChild(typing);
+  document.getElementById("aiMessages").scrollTop = 999999;
+
+  try {
+    const reply = await askAI(text);
+    document.getElementById("typing-indicator")?.remove();
+    const stored = loadChat();
+    stored.push({ role: "bot", text: reply, at: Date.now() });
+    saveChat(stored);
+    renderMessages();
+  } catch (err) {
+    document.getElementById("typing-indicator")?.remove();
+    const stored = loadChat();
+    stored.push({ role: "bot", text: "Sorry, the study-advisor knowledge base could not be loaded. Refresh the page and try again.", at: Date.now() });
+    saveChat(stored);
+    renderMessages();
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+let advisorKnowledge = null;
+
+async function getAdvisorKnowledge() {
+  if (advisorKnowledge) return advisorKnowledge;
+  const res = await fetch("assets/data/advisor-knowledge.json");
+  if (!res.ok) throw new Error("Knowledge base unavailable");
+  advisorKnowledge = await res.json();
+  return advisorKnowledge;
+}
+
+function money(amount) {
+  return amount === 0 ? "low/no tuition shown in our directory" : `$${Number(amount).toLocaleString()}/year shown in our directory`;
+}
+
+function universityMatches(text) {
+  const lower = text.toLowerCase();
+  return window.EDU_DATA.universities.filter(uni =>
+    lower.includes(uni.name.toLowerCase()) || lower.includes(uni.short.toLowerCase())
+  );
+}
+
+function countryInQuestion(text) {
+  const lower = text.toLowerCase();
+  return window.EDU_DATA.countries.find(country => lower.includes(country.toLowerCase()));
+}
+
+function courseInQuestion(text) {
+  const lower = text.toLowerCase();
+  return window.EDU_DATA.courses.find(course => lower.includes(course.toLowerCase()));
+}
+
+function listUniversities(universities) {
+  return universities.slice(0, 3).map((uni, index) =>
+    `${index + 1}. ${uni.flag} ${uni.name} (${uni.city}) — directory rank #${uni.rank}, ${money(uni.tuition)}. Strong for ${uni.courses.slice(0, 3).join(", ")}.`
+  ).join("\n");
+}
+
+function compareUniversities(first, second) {
+  const shared = first.courses.filter(course => second.courses.includes(course));
+  return `Here is a practical comparison from our directory:\n\n${first.name}\n• Rank: #${first.rank}\n• Tuition: ${money(first.tuition)}\n• Best-known listed subjects: ${first.courses.join(", ")}\n\n${second.name}\n• Rank: #${second.rank}\n• Tuition: ${money(second.tuition)}\n• Best-known listed subjects: ${second.courses.join(", ")}\n\nShared strengths: ${shared.length ? shared.join(", ") : "different subject mixes"}. Choose based on your course fit, budget, city preference and career goals — not rank alone.`;
+}
+
+function scholarshipReply(text, knowledge) {
+  const country = countryInQuestion(text);
+  const listed = window.EDU_DATA.scholarships.filter(item =>
+    !country || item.country === country || (country === "Germany" && item.name.includes("DAAD"))
+  ).slice(0, 4);
+  const lines = listed.length ? listed.map((item, index) =>
+    `${index + 1}. ${item.name} — ${item.type}, ${item.amount}; directory deadline: ${item.deadline}. ${item.desc}`
+  ).join("\n") : window.EDU_DATA.scholarships.slice(0, 4).map((item, index) =>
+    `${index + 1}. ${item.name} — ${item.country}, ${item.type}, ${item.amount}; directory deadline: ${item.deadline}.`
+  ).join("\n");
+  return `Here are options from the scholarship directory:\n\n${lines}\n\n${knowledge.scholarships.general} ${knowledge.scholarships.erasmus}`;
+}
+
+async function askAI(userText) {
+  await new Promise(r => setTimeout(r, 450 + Math.random() * 400));
+  const lower = userText.toLowerCase();
+  const knowledge = await getAdvisorKnowledge();
+  const matchedUniversities = universityMatches(userText);
+  const country = countryInQuestion(userText);
+  const course = courseInQuestion(userText);
+
+  if (/^(hi|hello|hey)\b/.test(lower)) return "Hello! Tell me your preferred country, course, budget or intake, and I will suggest options from the university directory.";
+  if (lower.includes("scholarship") || lower.includes("funding") || lower.includes("financial aid")) return scholarshipReply(userText, knowledge);
+  if (lower.includes("sop") || lower.includes("statement of purpose")) return `A strong SOP is specific and evidence-based:\n\n${knowledge.application.sop.map((tip, index) => `${index + 1}. ${tip}`).join("\n")}`;
+  if (lower.includes("deadline") || lower.includes("when should") || lower.includes("application timeline") || lower.includes("fall")) return `${knowledge.application.timeline}\n\nFor any university you shortlist here, open its official website and record the exact programme deadline.`;
+  if (lower.includes("visa")) return knowledge.application.visa;
+  if ((lower.includes("compare") || lower.includes(" vs ")) && matchedUniversities.length >= 2) return compareUniversities(matchedUniversities[0], matchedUniversities[1]);
+  if (matchedUniversities.length === 1) {
+    const uni = matchedUniversities[0];
+    return `${uni.flag} ${uni.name} is in ${uni.city}, ${uni.country}. In our directory it is ranked #${uni.rank}, with ${money(uni.tuition)}. It is listed for ${uni.courses.join(", ")}. ${uni.desc}\n\nWould you like me to compare it with another university or suggest scholarships?`;
+  }
+  if (country) {
+    let choices = window.EDU_DATA.universities.filter(uni => uni.country === country);
+    if (course) choices = choices.filter(uni => uni.courses.includes(course));
+    choices.sort((a, b) => a.rank - b.rank || a.tuition - b.tuition);
+    const guide = knowledge.countryGuides[country] || "Use the university's official international admissions page to confirm current programme requirements.";
+    return `${country === "Germany" ? "🇩🇪" : "🌍"} ${guide}\n\n${course ? `Best directory matches for ${course} in ${country}:` : `Top directory matches in ${country}:`}\n${listUniversities(choices)}\n\nThese are suggestions from our directory; verify current fees and entry requirements on each university website.`;
+  }
+  if (course) {
+    const choices = window.EDU_DATA.universities.filter(uni => uni.courses.includes(course)).sort((a, b) => a.rank - b.rank || a.tuition - b.tuition);
+    return `For ${course}, these are strong matches from the directory:\n\n${listUniversities(choices)}\n\nTell me your budget or preferred country and I can narrow this list further.`;
+  }
+  if (lower.includes("budget") || lower.includes("cheap") || lower.includes("affordable")) {
+    const choices = [...window.EDU_DATA.universities].sort((a, b) => a.tuition - b.tuition || a.rank - b.rank);
+    return `For a lower-tuition starting point, explore:\n\n${listUniversities(choices)}\n\nTuition values are directory estimates; living costs and programme fees can be different, so confirm them before applying.`;
+  }
+  if (lower.includes("analyst") || lower.includes("personality")) return "For an analytical profile, start with Data Science, Economics, Computer Science, Engineering or Business Analytics. Tell me which subject interests you most and I will match it to universities in the directory.";
+  return `I can help with university recommendations, course matching, country options, scholarships, SOP guidance, visas, timelines, budgets and university comparisons. For example, ask: “Best Computer Science universities in Germany under a lower tuition budget?”`;
+}
+
+function clearChat() {
+  if (loadChat().length && !confirm("Start a new chat? Current conversation will be cleared.")) return;
+  localStorage.removeItem(CHAT_KEY);
+  renderMessages();
+  renderHistory();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderMessages();
+  renderHistory();
+  document.getElementById("aiInput").focus();
+});
+</script>
+</body>
+</html>

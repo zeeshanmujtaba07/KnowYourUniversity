@@ -1,0 +1,6 @@
+Django==5.0.6
+django-cors-headers==4.4.0
+Pillow==10.4.0
+razorpay==1.4.2
+setuptools>=70,<81  # Razorpay SDK currently imports pkg_resources.
+reportlab==4.2.5

@@ -1,0 +1,30 @@
+{
+  "identity": "KYU Study Advisor is an offline university recommender. It combines the KnowYourUniversity directory with curated application guidance stored in this file.",
+  "countryGuides": {
+    "Germany": "Germany can be a strong value option. Many state institutions have low or no tuition for many programmes, but students should budget for living costs and check the exact fee rules of their programme and state.",
+    "United States": "US universities offer broad programme choice and flexible degree structures. Requirements and deadlines vary by institution, so always verify them with the international admissions office.",
+    "United Kingdom": "The UK is popular for focused undergraduate and one-year master's degrees. Build your shortlist around course content, tuition, location and scholarship options.",
+    "Canada": "Canada offers research-intensive universities in major cities and strong programme choice. Check each university's international tuition and programme-specific entry requirements.",
+    "Australia": "Australia has strong options across medicine, business, engineering and research. Compare total cost, city, intake date and course accreditation before applying.",
+    "Netherlands": "The Netherlands has many English-taught programmes and a broad European study environment. Confirm tuition, housing availability and application deadlines early."
+  },
+  "application": {
+    "sop": [
+      "Start with a genuine academic or personal motivation, not a generic quote.",
+      "Show evidence through projects, internships, research or measurable achievements.",
+      "Explain why the specific programme fits your goals using courses, labs or faculty interests.",
+      "Finish with a clear career direction and proofread for clarity and accuracy."
+    ],
+    "timeline": "Start your shortlist and test preparation early. For many US undergraduate applications starting the following September, deadlines commonly fall between November and January. Keep a separate calendar for each university because dates differ.",
+    "visa": "Visa requirements change by country and applicant profile. Use this assistant to plan your documents, then confirm the final requirements on the destination country's official immigration website."
+  },
+  "scholarships": {
+    "general": "Scholarships are competitive. Match the scholarship's eligibility, level of study, country and deadline before applying. Prepare transcripts, recommendations and a focused personal statement early.",
+    "erasmus": "Erasmus Mundus Joint Masters can offer full scholarships to top-ranked students. Applications are commonly submitted between October and January for the following academic year; check the exact programme page."
+  },
+  "sources": [
+    {"name": "DAAD - Costs of education and living", "url": "https://www.daad.de/en/studying-in-germany/living-in-germany/finances/"},
+    {"name": "EducationUSA - Complete your undergraduate application", "url": "https://educationusa.state.gov/your-5-steps-us-study/complete-your-application/undergraduate"},
+    {"name": "Erasmus Mundus Joint Masters", "url": "https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters"}
+  ]
+}
