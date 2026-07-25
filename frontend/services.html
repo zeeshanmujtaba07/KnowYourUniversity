@@ -174,7 +174,7 @@ function renderConsultants() {
         <div class="d-flex gap-2 pt-3" style="border-top:1px solid var(--border-color)">
           <a href="book.html?c=${c.id}" class="btn-yellow flex-fill" style="padding:.6rem 1rem;font-size:.85rem;line-height:1.15" data-testid="consultant-book-${c.id}">
             <i class="bi bi-calendar-check me-1"></i>Book Paid Consultation
-            <div style="font-size:.7rem;opacity:.85;margin-top:.15rem;font-weight:600">$99 · 60 min session</div>
+            <div style="font-size:.7rem;opacity:.85;margin-top:.15rem;font-weight:600">₹100 · 60 min session</div>
           </a>
           <a href="mailto:${c.email}" class="btn-outline-glass" style="padding:.55rem 1rem;font-size:.85rem" data-testid="consultant-email-${c.id}" title="Email"><i class="bi bi-envelope"></i></a>
           <a href="https://wa.me/${c.whatsapp.replace(/[^0-9]/g,'')}" target="_blank" rel="noopener" class="btn-outline-glass" style="padding:.55rem 1rem;font-size:.85rem" data-testid="consultant-whatsapp-${c.id}" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
